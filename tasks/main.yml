@@ -1,11 +1,4 @@
 ---
-- name: Install Redis
-  yum: name=redis state=latest enablerepo=remi
-
-- name: Auto Start Redis
-  command: chkconfig redis on
-  notify: restart redis
-
 - name: create phpredis client folder
   command: mkdir /tmp/phpredis force=no  creates=/tmp/phpredis
 
