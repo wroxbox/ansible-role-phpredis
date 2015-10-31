@@ -1,0 +1,22 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: wroxbox
+  description: Redis server with php support.
+  company: "Affecto Finland Oy"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.4
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+    - development
