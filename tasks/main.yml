@@ -5,25 +5,33 @@
     - unzip
 
 - name: create phpredis client folder
-  command: mkdir /tmp/phpredis force=no  creates=/tmp/phpredis
+  file: 'path="{{ download_tmp }}" state=directory'
 
 - name: download latest stable phpredis client
-  get_url: url=https://github.com/nicolasff/phpredis/archive/master.zip dest=/tmp/phpredis/master.zip
+  get_url:
+    url: "https://github.com/nicolasff/phpredis/archive/master.zip"
+    dest: "{{ download_tmp }}/master.zip"
+    force: yes
 
 - name: go to folder phpredis and unzip
-  command: chdir=/tmp/phpredis unzip master.zip
+  command: 'chdir="{{ download_tmp }}/" unzip master.zip'
 
 - name: Do Phpize Redis
-  command: chdir=/tmp/phpredis/phpredis-master phpize
+  command: 'chdir={{ download_tmp }}/phpredis-master phpize'
 
 - name: Configure
-  command: chdir=/tmp/phpredis/phpredis-master ./configure
+  command: 'chdir={{ download_tmp }}/phpredis-master ./configure'
 
 - name: Make Redis
-  command: chdir=/tmp/phpredis/phpredis-master make 
+  command: 'chdir={{ download_tmp }}/phpredis-master make'
 
 - name: Make Install The Redis
-  command: chdir=/tmp/phpredis/phpredis-master make install
+  command: 'chdir="{{ download_tmp }}/phpredis-master make install'
 
 - name: Add redis.so to php modules
-  copy: src=phpredis.ini dest=/etc/php.d/phpredis.ini force=yes
+  copy: src=phpredis.ini dest=/etc/php5/mods-available/phpredis.ini force=yes
+
+- name: Create symlink to redis.so
+  file: src=/etc/php5/mods-available/phpredis.ini dest=/etc/php5/fpm/conf.d/phpredis.ini state=link
+  notify: restart nginx
+  when: drupalvm_webserver == 'nginx'
