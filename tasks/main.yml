@@ -1,4 +1,9 @@
 ---
+- name: Get software for Redis.
+  apt: "name={{ item }} state=installed"
+  with_items:
+    - unzip
+
 - name: create phpredis client folder
   command: mkdir /tmp/phpredis force=no  creates=/tmp/phpredis
 
