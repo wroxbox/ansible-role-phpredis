@@ -26,7 +26,7 @@
   command: 'chdir={{ download_tmp }}/phpredis-master make'
 
 - name: Make Install The Redis
-  command: 'chdir="{{ download_tmp }}/phpredis-master make install'
+  command: 'chdir={{ download_tmp }}/phpredis-master make install'
 
 - name: Add redis.so to php modules
   copy: src=phpredis.ini dest=/etc/php5/mods-available/phpredis.ini force=yes
